@@ -1,5 +1,5 @@
 
-import React, {Component} from 'react';
+import React from 'react';
 
 function Users() {
   return <h2>Users</h2>;

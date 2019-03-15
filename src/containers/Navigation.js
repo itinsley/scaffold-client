@@ -13,8 +13,10 @@ import {
     DropdownMenu,
     DropdownItem } from 'reactstrap';
 
-    import About from '../components/About';
-    import Users from '../components/Users';
+import About from '../components/About';
+import Users from '../components/Users';
+import { Auth } from 'aws-amplify';
+import { MdPersonPin } from 'react-icons/md';
 
 function Index() {
   return <h2>Home</h2>;
@@ -26,9 +28,36 @@ export class Navigation extends Component {
   
       this.toggle = this.toggle.bind(this);
       this.state = {
-        isOpen: false
+        isOpen: false,
+        Username:''
       };
     }
+
+    componentDidMount(){
+      const _this = this;
+      const fetchCurrentSession = Auth.currentSession();
+      const fetchCurrentUser = Auth.currentUserInfo();
+      Promise.all([fetchCurrentSession, fetchCurrentUser]).then(function(results){
+        const session = results[0];
+        const user = results[1];
+        console.log("Session", session)
+        console.log("User", user)
+        localStorage.setItem('jwtToken', session.idToken.jwtToken);
+        // This is not being retrieved for some reason - maybe Cognito cached response?
+        localStorage.setItem('isAdmin', user.attributes['custom:isAdmin']);
+  
+        _this.setState({
+          Username: user.username
+        });
+      })
+    }
+  
+    logout(){
+      Auth.signOut()
+      window.location.reload()
+    }
+
+
     toggle() {
       this.setState({
         isOpen: !this.state.isOpen
@@ -66,6 +95,13 @@ export class Navigation extends Component {
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
+                <NavItem>
+                  <NavLink  className='disabled-link'><MdPersonPin />  {this.state.Username}</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink onClick={this.logout} tag={Link} to="/logout">Logout</NavLink>
+                </NavItem>
+
               </Nav>
             </Collapse>
           </Navbar>
