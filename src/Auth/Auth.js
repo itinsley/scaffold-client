@@ -62,6 +62,13 @@ export default class Auth {
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
+    this.getProfile((err, profile)=>{
+      if (err){
+        console.log("Error retrieving profile", err);
+      }
+      localStorage.setItem('userNickname', profile.nickname);
+    })
+
     // navigate to the home route
     history.replace('/home');
   }

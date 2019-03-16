@@ -18,7 +18,7 @@ import { MdPersonPin } from 'react-icons/md';
 export class Navigation extends Component {
     constructor(props) {
       super(props);
-  
+
       this.toggle = this.toggle.bind(this);
       this.state = {
         isOpen: false,
@@ -35,6 +35,15 @@ export class Navigation extends Component {
         isOpen: !this.state.isOpen
       });
     }
+
+    isLoggedIn(){
+      return localStorage.getItem('isLoggedIn');
+    }
+
+    userNickname(){
+      return localStorage.getItem('userNickname');
+    }
+
     render() {
       return (
         <div>
@@ -51,6 +60,9 @@ export class Navigation extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} to="/home">Home</NavLink>
+                </NavItem>                
+                <NavItem>
+                  <NavLink tag={Link} to="/profile">Profile</NavLink>
                 </NavItem>                
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
@@ -71,8 +83,8 @@ export class Navigation extends Component {
                 </UncontrolledDropdown>
                 <NavItem>
                   {
-                    (localStorage.getItem('isLoggedIn') === 'true') &&
-                      <NavLink  className='disabled-link'><MdPersonPin />Someone</NavLink>
+                    (this.isLoggedIn() === 'true') &&
+                      <NavLink  className='disabled-link'><MdPersonPin />{this.userNickname()}</NavLink>
                   }
                 </NavItem>
                 <NavItem>
