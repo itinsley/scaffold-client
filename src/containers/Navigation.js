@@ -51,12 +51,11 @@ export class Navigation extends Component {
         });
       })
     }
-  
+      
     logout(){
       Auth.signOut()
       window.location.reload()
     }
-
 
     toggle() {
       this.setState({
@@ -65,7 +64,6 @@ export class Navigation extends Component {
     }
     render() {
       return (
-        <Router>
         <div>
           <Navbar color="light" light expand="md">
             <NavbarBrand href="/">HOME</NavbarBrand>
@@ -105,14 +103,7 @@ export class Navigation extends Component {
               </Nav>
             </Collapse>
           </Navbar>
-
-          <Route path="/" exact component={Index} />
-          <Route path="/about/" component={About} />
-          <Route path="/users/" component={Users} />
-
         </div>
-
-        </Router>
       );
     }
   }
