@@ -9,7 +9,7 @@ class App extends Component {
       <div className="container-fluid">
         <div className="row">
           <main className="main-content col-lg-12 col-md-12 col-sm-12 p-0">
-            <Navigation/>
+            <Navigation  auth = {this.props.auth}/>
             <div className="main-content-container container-fluid px-4">
             </div>
           </main>

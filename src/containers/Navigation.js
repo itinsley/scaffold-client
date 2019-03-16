@@ -11,7 +11,8 @@ import {
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
-    DropdownItem } from 'reactstrap';
+    DropdownItem,
+    Button } from 'reactstrap';
 import { MdPersonPin } from 'react-icons/md';
 
 export class Navigation extends Component {
@@ -69,10 +70,13 @@ export class Navigation extends Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <NavItem>
-                  <NavLink  className='disabled-link'><MdPersonPin />  {this.state.Username}</NavLink>
+                  {
+                    (localStorage.getItem('isLoggedIn') === 'true') &&
+                      <NavLink  className='disabled-link'><MdPersonPin />Someone</NavLink>
+                  }
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={this.logout.bind(this)} tag={Link} to="/logout">Logout</NavLink>
+                  <Button onClick={this.logout.bind(this)} >Logout</Button>
                 </NavItem>
 
               </Nav>
