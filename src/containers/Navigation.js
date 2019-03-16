@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
     Collapse,
     Navbar,
@@ -12,15 +12,7 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
-
-import About from '../components/About';
-import Users from '../components/Users';
-import { Auth } from 'aws-amplify';
 import { MdPersonPin } from 'react-icons/md';
-
-function Index() {
-  return <h2>Home</h2>;
-}
 
 export class Navigation extends Component {
     constructor(props) {
@@ -33,30 +25,10 @@ export class Navigation extends Component {
       };
     }
 
-    componentDidMount(){
-      const _this = this;
-      const fetchCurrentSession = Auth.currentSession();
-      const fetchCurrentUser = Auth.currentUserInfo();
-      Promise.all([fetchCurrentSession, fetchCurrentUser]).then(function(results){
-        const session = results[0];
-        const user = results[1];
-        console.log("Session", session)
-        console.log("User", user)
-        localStorage.setItem('jwtToken', session.idToken.jwtToken);
-        // This is not being retrieved for some reason - maybe Cognito cached response?
-        localStorage.setItem('isAdmin', user.attributes['custom:isAdmin']);
-  
-        _this.setState({
-          Username: user.username
-        });
-      })
+    logout() {
+      this.props.auth.logout();
     }
-      
-    logout(){
-      Auth.signOut()
-      window.location.reload()
-    }
-
+        
     toggle() {
       this.setState({
         isOpen: !this.state.isOpen
@@ -76,6 +48,9 @@ export class Navigation extends Component {
                 <NavItem>
                   <NavLink tag={Link} to="/users">Users</NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/home">Home</NavLink>
+                </NavItem>                
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Drop Down
@@ -97,7 +72,7 @@ export class Navigation extends Component {
                   <NavLink  className='disabled-link'><MdPersonPin />  {this.state.Username}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={this.logout} tag={Link} to="/logout">Logout</NavLink>
+                  <NavLink onClick={this.logout.bind(this)} tag={Link} to="/logout">Logout</NavLink>
                 </NavItem>
 
               </Nav>
