@@ -63,14 +63,17 @@ export class Navigation extends Component {
                 </NavItem>                
                 <NavItem>
                   <NavLink tag={Link} to="/profile">Profile</NavLink>
-                </NavItem>                
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/ping">Ping</NavLink>
+                </NavItem>
+
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     Drop Down
                   </DropdownToggle>
                   <DropdownMenu right>
                   <DropdownItem>
-                      <NavLink tag={Link} to="/about">About</NavLink>
                     </DropdownItem>
                     <DropdownItem>
                       <NavLink tag={Link} to="/users">Users</NavLink>
@@ -88,7 +91,10 @@ export class Navigation extends Component {
                   }
                 </NavItem>
                 <NavItem>
-                  <Button onClick={this.logout.bind(this)} >Logout</Button>
+                  {
+                    (this.isLoggedIn() === 'true') &&
+                      <Button onClick={this.logout.bind(this)} >Logout</Button>
+                  }
                 </NavItem>
 
               </Nav>
